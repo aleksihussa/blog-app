@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors());d
 const commentsByPostId = {};
 
 app.get('/posts/:id/comments', (req, res) => {
@@ -34,6 +34,13 @@ app.post('/posts/:id/comments', (req, res) => {
 
   res.status(201).send(comments);
 });
+
+
+app.post('/events',(req,res) => {
+  console.log('received', req.body.type);
+
+  res.send({});
+})
 
 app.listen(4001, () => {
   console.log('Listening on 4001');

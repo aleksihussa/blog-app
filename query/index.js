@@ -14,7 +14,7 @@ app.get('/posts', (req,res) => {
 })
 
 app.post('/events', (req,res) => {
-    const {type, data} = req.data;
+    const {type, data} = req.body;
 
     if(type == 'postCreated')
     {
@@ -23,11 +23,24 @@ app.post('/events', (req,res) => {
         allPosts[id] = {id, title, comments: []};
     }
 
-    if(type == 'postCreated')
+    if(type == 'commentCreated')
     {
-        const {id, content, postId } = data;
+        const {id, content, postId, status } = data;
         const post = allPosts[postId];
-        post.comments.push({id, content});
+        post.comments.push({id, content, status});
+    }
+
+    if(type === 'commentUpdated')
+    {
+        const {id, content, postId, status} = data;
+
+        const post = allPosts[postId];
+        const comment = post.comments.find(comment => {
+            return comment.id === id;
+          });
+
+        comment.status = status;
+        comment.content = content;
     }
 
     res.send({});
